@@ -16,12 +16,12 @@
   register: atom_github_result
   when: atom_version == 'latest'
 
-- name: set atom latest version fact
+- name: set atom latest version fact to latest
   set_fact:
     atom_version: "{{ atom_github_result.json.tag_name|default(atom_default_version)|replace('v','') }}"
   when: atom_version == 'latest'
 
-- name: set atom version fact
+- name: set atom version fact to default
   set_fact:
     atom_version: "{{ atom_default_version }}"
   when: atom_version == '' or atom_version is none
