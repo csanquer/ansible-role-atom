@@ -1,12 +1,20 @@
 ---
-- name: download atom on redhat
-  get_url:
-    url: "{{atom_base_url}}/v{{atom_version}}/{{atom_rpm}}"
-    dest: "/tmp/{{atom_rpm}}"
-  when: atom_current_version != atom_version
+- name: add atom RPM repository GPG key
+  rpm_key:
+    key: "{{ atom_rpm_key_url }}"
+    state: present
+
+- name: add atom RPM main repository
+  yum_repository:
+    name: "Atom Editor"
+    description: "Atom Editor YUM repo"
+    baseurl: "{{ atom_rpm_url }}"
+    gpgkey: "{{ atom_rpm_key_url }}"
+    gpgcheck: no
+    repo_gpgcheck: yes
+    enabled: yes
 
 - name: install atom on redhat
   yum:
-    name: "/tmp/{{atom_rpm}}"
-    state: present
-  when: atom_current_version != atom_version
+    name: atom
+    state: "{{ atom_version|default('present') }}"

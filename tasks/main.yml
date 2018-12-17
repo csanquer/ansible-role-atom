@@ -1,8 +1,4 @@
 ---
-- include: version.yml
-  tags:
-    - atom
-
 - include: install_debian.yml
   when: ansible_os_family == 'Debian'
   tags:
